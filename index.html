@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Game for Kids</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" crossorigin="anonymous" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('https://wallpaperaccess.com/full/4661976.jpg');
+            background-size: cover;
+            background-position: center;
+            animation: gradientAnimation 10s ease infinite;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            text-align: center;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .feature-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .feature {
+            width: 200px;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 20px;
+            background-color: #b2ebbf;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        .feature:hover {
+            background-color: #86cc8e;
+            transform: scale(1.05);
+        }
+
+        .feature h1 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #333;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature i {
+            font-size: 50px;
+            margin-bottom: 15px;
+            color: #4d4d4d;
+        }
+
+        .btn {
+            background-color: #2196F3;
+            color: #fff;
+            border-radius: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
+            transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        .btn:hover {
+            background-color: #1565c0;
+            transform: scale(1.05);
+        }
+
+        /* Additional Styles */
+        #targetContainer {
+            position: relative;
+        }
+
+        #target {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: #ffb6b9;
+            border-radius: 50%;
+        }
+
+        #iconExplorer,
+        #shapesHunt,
+        #keyboardBasics,
+        #gameProgression,
+        #positiveReinforcement {
+            position: relative;
+        }
+
+        #iconExplorer,
+        #shapesHunt,
+        #keyboardBasics,
+        #gameProgression,
+        #positiveReinforcement,
+        #creativeColoring {
+            background-color: #c1e7e3;
+            overflow: hidden;
+        }
+
+        #colorCanvas {
+            display: none;
+            border: 2px solid #000;
+            border-radius: 10px;
+        }
+
+        .brush {
+            display: none;
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: black;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .color-palette {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .color-palette .color {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Enhanced Header Section -->
+    <header>
+        <span style="font-size: 48px;">Welcome to the</span><br>
+        Interactive Game for Kids
+    </header>
+
+    <div class="container text-center">
+        <!-- Feature Container -->
+        <div class="feature-container">
+            <!-- Mouse Mastery -->
+            <div class="feature" id="targetContainer" onmouseover="moveTarget();" onclick="mouseMasteryClick();">
+                <div id="target"></div>
+                <h1>Mouse Mastery</h1>
+                <i class="fas fa-mouse"></i>
+            </div>
+
+            <!-- Icon Explorer -->
+            <div class="feature" id="iconExplorer" onclick="showInfo('Icon'); changeIcon('Mouse');">
+                <div class="shapes-container">
+                    <i class="fas fa-mouse shape"></i>
+                    <i class="fas fa-cat shape"></i>
+                    <i class="fas fa-dog shape"></i>
+                    <i class="fas fa-fish shape"></i>
+                </div>
+                <h1>Icon Explorer</h1>
+            </div>
+
+            <!-- Colorful Shapes Hunt -->
+            <div class="feature" id="shapesHunt" onclick="checkShape(this);">
+                <div class="shapes-container">
+                    <i class="fas fa-circle shape"></i>
+                    <i class="fas fa-square shape"></i>
+                    <i class="fas fa-triangle shape"></i>
+                    <i class="fas fa-star shape"></i>
+                    <i class="fas fa-heart shape"></i>
+                    <i class="fas fa-gem shape"></i>
+                    <i class="fas fa-pentagon shape"></i>
+                    <i class="fas fa-hexagon shape"></i>
+                    <div class="shape-name"></div>
+                </div>
+                <h1>Shapes Hunt</h1>
+            </div>
+
+            <!-- Keyboard Basics -->
+            <div class="feature" id="keyboardBasics">
+                <div class="shapes-container">
+                    <i class="fas fa-keyboard shape"></i>
+                </div>
+                <h1>Keyboard Basics</h1>
+                <div id="wordInputContainer">
+                    <div id="wordToType"></div>
+                    <input type="text" id="wordInput" placeholder="Type the word..." oninput="checkTypedWord()">
+                    <button class="btn btn-primary" onclick="generateRandomWord()">New Word</button>
+                </div>
+                <div id="typedWord"></div>
+            </div>
+
+            <!-- Creative Coloring -->
+            <div class="feature" id="creativeColoring" onclick="activateCreativeColoring();">
+                <div class="shapes-container">
+                    <i class="fas fa-paint-brush shape"></i>
+                </div>
+                <h1>Creative Coloring</h1>
+                <div class="color-palette">
+                    <!-- Color palette dynamically generated by JavaScript -->
+                </div>
+                <canvas id="colorCanvas" width="1000" height="600"></canvas>
+                <div class="brush" id="brush"></div>
+            </div>
+
+            <!-- Game Progression -->
+            <div class="feature" id="gameProgression" onclick="nextLevel();">
+                <div class="shapes-container">
+                    <i class="fas fa-gamepad shape"></i>
+                </div>
+                <h1>Game Progression</h1>
+            </div>
+
+            <!-- Positive Reinforcement -->
+            <div class="feature" id="positiveReinforcement" onclick="cheer();">
+                <div class="shapes-container">
+                    <i class="fas fa-thumbs-up shape"></i>
+                </div>
+                <h1>Positive Reinforcement</h1>
+            </div>
+        </div>
+
+        <!-- Level Display and Button -->
+        <div class="container text-center mt-3">
+            <div id="level">Level 1</div>
+            <button onclick="nextLevel();" class="btn btn-primary mt-3">Next Level</button>
+        </div>
+
+        <!-- Feedback and Button -->
+        <div class="container text-center mt-3">
+            <div id="feedback"></div>
+            <button onclick="cheer();" class="btn btn-success mt-3">Cheer Me Up</button>
+        </div>
+
+        <!-- Additional Elements -->
+        <div id="info"></div>
+        <div id="keyPressed"></div>
+    </div>
+
+    <script>
+        // JavaScript code here
+        let target;
+        let isCreativeColoringActive = false;
+        let currentLevel = 1;
+
+        function moveTarget() {
+            if (target) {
+                const maxX = window.innerWidth - 50;
+                const maxY = window.innerHeight - 50;
+
+                const newX = Math.random() * maxX;
+                const newY = Math.random() * maxY;
+
+                target.style.left = newX + 'px';
+                target.style.top = newY + 'px';
+            } else {
+                console.error("Element with id 'target' not found");
+            }
+        }
+
+        function showInfo(icon) {
+            const info = document.getElementById('info');
+            info.textContent = `You clicked on the ${icon} icon!`;
+        }
+
+        function changeIcon(icon) {
+            const iconExplorer = document.getElementById('iconExplorer');
+            const shapesContainer = iconExplorer.querySelector('.shapes-container');
+
+            const iconElement = shapesContainer.querySelector(`.fa-${icon.toLowerCase()}`);
+            
+            if (iconElement) {
+                iconElement.style.display = 'block';
+
+                const otherIcons = shapesContainer.querySelectorAll('.shape');
+                otherIcons.forEach((otherIcon) => {
+                    if (otherIcon !== iconElement) {
+                        otherIcon.style.display = 'none';
+                    }
+                });
+            } else {
+                console.error(`Icon not found for ${icon}`);
+            }
+        }
+
+        let mouseMasteryClicks = 0;
+
+        function mouseMasteryClick() {
+            mouseMasteryClicks++;
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = `You clicked the mouse ${mouseMasteryClicks} times!`;
+        }
+
+        function checkShape(shape) {
+            const shapeName = shape.querySelector('.shape-name');
+            const shapesContainer = shape.querySelector('.shapes-container');
+
+            const shapeType = getRandomShapeName();
+            shapeName.textContent = shapeType;
+
+            const shapeIcon = shapesContainer.querySelector(`.fa-${shapeType.toLowerCase()}`);
+            
+            if (shapeIcon) {
+                shapeIcon.style.display = 'block';
+
+                const otherIcons = shapesContainer.querySelectorAll('.shape');
+                otherIcons.forEach((otherIcon) => {
+                    if (otherIcon !== shapeIcon) {
+                        otherIcon.style.display = 'none';
+                    }
+                });
+
+                shape.style.backgroundColor = getRandomColor();
+            } else {
+                console.error(`Shape icon not found for ${shapeType}`);
+            }
+        }
+
+        function showKeyPress(event) {
+            const keyPressed = document.getElementById('keyPressed');
+            keyPressed.textContent = `You pressed the key: ${event.key} (Code: ${event.code})`;
+        }
+
+        let isDrawing = false;
+
+        function startDrawing() {
+            isDrawing = true;
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        function colorCanvas(event) {
+            const canvas = document.getElementById('colorCanvas');
+            const ctx = canvas.getContext('2d');
+
+            const x = event.clientX - canvas.offsetLeft;
+            const y = event.clientY - canvas.offsetTop;
+
+            if (isDrawing) {
+                ctx.fillStyle = getBrushColor();
+                ctx.beginPath();
+                ctx.arc(x, y, getBrushSize() / 2, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+        }
+
+        function getBrushSize() {
+            return 30;
+        }
+
+        function getBrushColor() {
+            const brush = document.getElementById('brush');
+            return window.getComputedStyle(brush).getPropertyValue('background-color');
+        }
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function getRandomShapeName() {
+            const shapes = ['Circle', 'Square', 'Triangle', 'Star', 'Heart', 'Diamond', 'Pentagon', 'Hexagon'];
+            return shapes[Math.floor(Math.random() * shapes.length)];
+        }
+
+        function generateRandomWord() {
+            const words = ['apple', 'banana', 'cat', 'dog', 'elephant', 'fish', 'giraffe', 'horse', 'iguana', 'jellyfish'];
+            const randomIndex = Math.floor(Math.random() * words.length);
+            const randomWord = words[randomIndex];
+
+            document.getElementById('wordInput').value = '';
+            document.getElementById('typedWord').textContent = '';
+
+            setWordToType(randomWord);
+        }
+
+        function setWordToType(word) {
+            const wordToType = document.getElementById('wordToType');
+            wordToType.textContent = word.split('').join(' ');
+
+            const wordInput = document.getElementById('wordInput');
+            wordInput.dataset.wordToType = word;
+        }
+
+        function checkTypedWord() {
+            const wordInput = document.getElementById('wordInput');
+            const typedWord = document.getElementById('typedWord');
+
+            const wordToType = wordInput.dataset.wordToType;
+            const userTypedWord = wordInput.value;
+
+            if (wordToType.startsWith(userTypedWord)) {
+                typedWord.textContent = userTypedWord;
+            } else {
+                typedWord.textContent = '';
+            }
+
+            if (wordToType === userTypedWord) {
+                generateRandomWord();
+            }
+        }
+
+        function nextLevel() {
+            const level = document.getElementById('level');
+            currentLevel++;
+            level.textContent = `Level ${currentLevel}`;
+        }
+
+        function cheer() {
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = 'Great job! Keep up the good work!';
+        }
+
+        function activateCreativeColoring() {
+            isCreativeColoringActive = true;
+            document.getElementById('colorCanvas').style.display = 'block';
+            document.getElementById('brush').style.display = 'block';
+            createColorPalette();
+        }
+
+        function createColorPalette() {
+            const colorPalette = document.querySelector('.color-palette');
+            const colors = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#33FFFF'];
+
+            colors.forEach((color) => {
+                const colorDiv = document.createElement('div');
+                colorDiv.classList.add('color');
+                colorDiv.style.backgroundColor = color;
+                colorDiv.addEventListener('click', () => changeBrushColor(color));
+                colorPalette.appendChild(colorDiv);
+            });
+        }
+
+        function changeBrushColor(color) {
+            document.getElementById('brush').style.backgroundColor = color;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            target = document.getElementById('target');
+
+            if (target) {
+                target.addEventListener('mouseover', moveTarget);
+            } else {
+                console.error("Element with id 'target' not found");
+            }
+
+            generateRandomWord();
+
+            document.addEventListener('keydown', showKeyPress);
+        });
+
+        document.addEventListener('mousemove', function (event) {
+            if (isCreativeColoringActive) {
+                colorCanvas(event);
+            }
+        });
+
+        document.addEventListener('mousedown', function () {
+            if (isCreativeColoringActive) {
+                startDrawing();
+            }
+        });
+
+        document.addEventListener('mouseup', function () {
+            if (isCreativeColoringActive) {
+                stopDrawing();
+            }
+        });
+    </script>
+
+</body>
+</html>
